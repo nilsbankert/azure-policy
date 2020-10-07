@@ -1,0 +1,31 @@
+name: manage-azure-policy-e329ae45
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/Deny_managed_Disk_Encryption_creation_e9e36808-6460-4dbc-a7be-961d94c6ec75/**'
+#      - .github/workflows/manage-azure-policy-e329ae45.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_e329ae45}}
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/Deny_managed_Disk_Encryption_creation_e9e36808-6460-4dbc-a7be-961d94c6ec75/**
